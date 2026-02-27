@@ -1,33 +1,47 @@
 #include <stdio.h>
 
 /**
+ * print_big - prints a big number split in 3 parts
+ * @hi: high part
+ * @mid: middle part
+ * @lo: low part
+ */
+void print_big(unsigned long hi, unsigned long mid, unsigned long lo)
+{
+	if (hi > 0)
+		printf("%lu%06lu%06lu", hi, mid, lo);
+	else if (mid > 0)
+		printf("%lu%06lu", mid, lo);
+	else
+		printf("%lu", lo);
+}
+
+/**
  * main - prints first 98 Fibonacci numbers
  *
  * Return: Always 0.
  */
 int main(void)
 {
-	unsigned long a1, a2, b1, b2, t1, t2;
+	unsigned long ah, am, al, bh, bm, bl, th, tm, tl, c1, c2;
 	int i;
 
-	a1 = 1;
-	a2 = 0;
-	b1 = 2;
-	b2 = 0;
+	ah = 0; am = 0; al = 1;
+	bh = 0; bm = 0; bl = 2;
 	for (i = 0; i < 98; i++)
 	{
-		if (a2 > 0)
-			printf("%lu%018lu", a2, a1);
-		else
-			printf("%lu", a1);
+		print_big(ah, am, al);
 		if (i < 97)
 			printf(", ");
-		t1 = a1 + b1;
-		t2 = a2 + b2 + (t1 < a1 ? 1 : 0);
-		a1 = b1;
-		a2 = b2;
-		b1 = t1;
-		b2 = t2;
+		tl = al + bl;
+		c1 = tl / 1000000;
+		tl = tl % 1000000;
+		tm = am + bm + c1;
+		c2 = tm / 1000000;
+		tm = tm % 1000000;
+		th = ah + bh + c2;
+		ah = bh; am = bm; al = bl;
+		bh = th; bm = tm; bl = tl;
 	}
 	printf("\n");
 	return (0);
