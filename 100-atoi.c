@@ -16,13 +16,9 @@ int _atoi(char *s)
 	while (*s != '\0')
 	{
 		if (*s == '-')
-		{
 			neg = !neg;
-		}
-		else if (*s == '+' || *s == ' ')
-		{
+		else if (*s == '+')
 			;
-		}
 		else if (*s >= '0' && *s <= '9')
 		{
 			while (*s >= '0' && *s <= '9')
@@ -35,9 +31,7 @@ int _atoi(char *s)
 			return (result);
 		}
 		else
-		{
 			neg = 0;
-		}
 		s++;
 	}
 	return (0);
