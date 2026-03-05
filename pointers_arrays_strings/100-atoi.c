@@ -8,35 +8,40 @@
  */
 int _atoi(char *s)
 {
-	int sign;
 	int result;
 	int neg;
+	int in_sign;
 
 	result = 0;
+	neg = 0;
+	in_sign = 0;
 	while (*s != '\0')
 	{
-		sign = 1;
-		neg = 0;
-		while (*s == '-' || *s == '+')
+		if (*s == '-')
 		{
-			if (*s == '-')
-				neg = !neg;
-			s++;
+			neg = !neg;
+			in_sign = 1;
 		}
-		if (*s >= '0' && *s <= '9')
+		else if (*s == '+')
+			in_sign = 1;
+		else if (*s >= '0' && *s <= '9')
 		{
-			if (neg)
-				sign = -1;
 			while (*s >= '0' && *s <= '9')
 			{
 				result = result * 10 + (*s - '0');
 				s++;
 			}
-			return (sign * result);
+			if (neg)
+				return (-result);
+			return (result);
 		}
-		if (neg)
-			s--;
+		else
+		{
+			neg = 0;
+			in_sign = 0;
+		}
 		s++;
 	}
+	(void)in_sign;
 	return (0);
 }
