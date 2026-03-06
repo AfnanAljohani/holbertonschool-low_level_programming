@@ -20,7 +20,10 @@ char *rot13(char *s)
 		while (from[j] != '\0')
 		{
 			if (s[i] == from[j])
+			{
 				s[i] = to[j];
+				j = 52;
+			}
 			j++;
 		}
 		i++;
