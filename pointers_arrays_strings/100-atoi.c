@@ -10,24 +10,22 @@ int _atoi(char *s)
 {
 	int sign;
 	int result;
-	int digits_found;
+	int has_digit;
 
 	sign = 1;
 	result = 0;
-	digits_found = 0;
+	has_digit = 0;
 
 	while (*s)
 	{
-		if (digits_found == 0 && *s == '-')
+		if (*s == '-' && has_digit == 0)
 			sign *= -1;
-		else if (digits_found == 0 && *s == '+')
-			sign *= 1;
 		else if (*s >= '0' && *s <= '9')
 		{
-			digits_found = 1;
+			has_digit = 1;
 			result = result * 10 + (*s - '0');
 		}
-		else if (digits_found == 1)
+		else if (has_digit == 1)
 			break;
 		s++;
 	}
