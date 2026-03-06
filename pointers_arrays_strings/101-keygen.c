@@ -9,13 +9,22 @@
  */
 int main(void)
 {
-	int i;
-	int pass_len;
+	int target;
+	int current;
+	int c;
 
 	srand(time(NULL));
-	pass_len = rand() % 10 + 1;
-	for (i = 0; i < pass_len; i++)
-		putchar(rand() % 94 + 33);
+	target = 0xad4;
+	current = 0;
+
+	while (current < target - 126)
+	{
+		c = rand() % 94 + 33;
+		putchar(c);
+		current += c;
+	}
+	c = target - current;
+	putchar(c);
 	putchar('\n');
 	return (0);
 }
