@@ -23,11 +23,14 @@ int _atoi(char *s)
 		else if (*s >= '0' && *s <= '9')
 		{
 			has_digit = 1;
-			result = result * 10 + (*s - '0');
+			if (sign == -1)
+				result = result * 10 - (*s - '0');
+			else
+				result = result * 10 + (*s - '0');
 		}
 		else if (has_digit == 1)
 			break;
 		s++;
 	}
-	return (sign * result);
+	return (result);
 }
