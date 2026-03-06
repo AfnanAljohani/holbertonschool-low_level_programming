@@ -15,7 +15,7 @@ void print_number(int n)
 	}
 
 	div = 1;
-	while (div * 10 <= n)
+	while (n / div >= 10)
 		div *= 10;
 
 	while (div >= 1)
