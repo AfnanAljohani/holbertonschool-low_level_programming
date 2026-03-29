@@ -22,19 +22,21 @@ int count_words(char *str)
 }
 
 /**
- * word_len - returns length of a word
- * @str: pointer to start of word
- *
- * Return: length
+ * fill_word - fills a single word into allocated memory
+ * @str: source string position
+ * @word: destination
  */
-int word_len(char *str)
+void fill_word(char *str, char *word)
 {
-	int len;
+	int j;
 
-	len = 0;
-	while (str[len] != ' ' && str[len] != '\0')
-		len++;
-	return (len);
+	j = 0;
+	while (str[j] != ' ' && str[j] != '\0')
+	{
+		word[j] = str[j];
+		j++;
+	}
+	word[j] = '\0';
 }
 
 /**
@@ -46,46 +48,35 @@ int word_len(char *str)
 char **strtow(char *str)
 {
 	char **arr;
-	int i, j, k, words, len;
+	int i, k, words, len;
 
 	if (str == NULL || str[0] == '\0')
 		return (NULL);
-
 	words = count_words(str);
 	if (words == 0)
 		return (NULL);
-
 	arr = malloc(sizeof(char *) * (words + 1));
 	if (arr == NULL)
 		return (NULL);
-
 	i = 0;
 	k = 0;
 	while (k < words)
 	{
 		while (str[i] == ' ')
 			i++;
-
-		len = word_len(str + i);
+		len = 0;
+		while (str[i + len] != ' ' && str[i + len] != '\0')
+			len++;
 		arr[k] = malloc(sizeof(char) * (len + 1));
 		if (arr[k] == NULL)
 		{
 			while (k > 0)
-			{
-				k--;
-				free(arr[k]);
-			}
+				free(arr[--k]);
 			free(arr);
 			return (NULL);
 		}
-		j = 0;
-		while (j < len)
-		{
-			arr[k][j] = str[i];
-			i++;
-			j++;
-		}
-		arr[k][j] = '\0';
+		fill_word(str + i, arr[k]);
+		i += len;
 		k++;
 	}
 	arr[k] = NULL;
