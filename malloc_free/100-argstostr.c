@@ -1,19 +1,15 @@
 #include "main.h"
 
 /**
- * argstostr - concatenates all arguments of the program
+ * get_total - gets total length needed
  * @ac: argument count
  * @av: argument vector
  *
- * Return: pointer to new string, or NULL if it fails
+ * Return: total length
  */
-char *argstostr(int ac, char **av)
+int get_total(int ac, char **av)
 {
-	char *str;
-	int i, j, k, total;
-
-	if (ac == 0 || av == NULL)
-		return (NULL);
+	int i, j, total;
 
 	total = 0;
 	i = 0;
@@ -28,7 +24,25 @@ char *argstostr(int ac, char **av)
 		total++;
 		i++;
 	}
+	return (total);
+}
 
+/**
+ * argstostr - concatenates all arguments of the program
+ * @ac: argument count
+ * @av: argument vector
+ *
+ * Return: pointer to new string, or NULL if it fails
+ */
+char *argstostr(int ac, char **av)
+{
+	char *str;
+	int i, j, k, total;
+
+	if (ac == 0 || av == NULL)
+		return (NULL);
+
+	total = get_total(ac, av);
 	str = malloc(sizeof(char) * (total + 1));
 	if (str == NULL)
 		return (NULL);
@@ -40,12 +54,9 @@ char *argstostr(int ac, char **av)
 		j = 0;
 		while (av[i][j] != '\0')
 		{
-			str[k] = av[i][j];
-			k++;
-			j++;
+			str[k++] = av[i][j++];
 		}
-		str[k] = '\n';
-		k++;
+		str[k++] = '\n';
 		i++;
 	}
 	str[k] = '\0';
