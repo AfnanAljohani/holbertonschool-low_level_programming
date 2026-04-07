@@ -10,9 +10,6 @@ void print_all(const char * const format, ...)
 	unsigned int i;
 	char *str;
 	char *sep;
-	char c;
-	int num;
-	float f;
 
 	va_start(args, format);
 	i = 0;
@@ -20,29 +17,22 @@ void print_all(const char * const format, ...)
 	while (format && format[i])
 	{
 		str = NULL;
-		if (format[i] == 'c')
+		while (format[i] == 'c' || format[i] == 'i' ||
+			format[i] == 'f' || format[i] == 's')
 		{
-			c = va_arg(args, int);
-			printf("%s%c", sep, c);
+			if (format[i] == 'c')
+				printf("%s%c", sep, va_arg(args, int));
+			if (format[i] == 'i')
+				printf("%s%d", sep, va_arg(args, int));
+			if (format[i] == 'f')
+				printf("%s%f", sep, va_arg(args, double));
+			if (format[i] == 's')
+			{
+				str = va_arg(args, char *);
+				printf("%s%s", sep, str ? str : "(nil)");
+			}
 			sep = ", ";
-		}
-		if (format[i] == 'i')
-		{
-			num = va_arg(args, int);
-			printf("%s%d", sep, num);
-			sep = ", ";
-		}
-		if (format[i] == 'f')
-		{
-			f = va_arg(args, double);
-			printf("%s%f", sep, f);
-			sep = ", ";
-		}
-		if (format[i] == 's')
-		{
-			str = va_arg(args, char *);
-			printf("%s%s", sep, str ? str : "(nil)");
-			sep = ", ";
+			break;
 		}
 		i++;
 	}
