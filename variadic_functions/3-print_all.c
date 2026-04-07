@@ -1,5 +1,4 @@
 #include "variadic_functions.h"
-#include <stdio.h>
 
 /**
  * print_all - prints anything
@@ -10,44 +9,40 @@ void print_all(const char * const format, ...)
 	va_list args;
 	unsigned int i;
 	char *str;
-	int first;
+	char *sep;
+	char c;
+	int num;
+	float f;
 
 	va_start(args, format);
 	i = 0;
-	first = 1;
+	sep = "";
 	while (format && format[i])
 	{
+		str = NULL;
 		if (format[i] == 'c')
 		{
-			if (!first)
-				printf(", ");
-			printf("%c", va_arg(args, int));
-			first = 0;
+			c = va_arg(args, int);
+			printf("%s%c", sep, c);
+			sep = ", ";
 		}
 		if (format[i] == 'i')
 		{
-			if (!first)
-				printf(", ");
-			printf("%d", va_arg(args, int));
-			first = 0;
+			num = va_arg(args, int);
+			printf("%s%d", sep, num);
+			sep = ", ";
 		}
 		if (format[i] == 'f')
 		{
-			if (!first)
-				printf(", ");
-			printf("%f", va_arg(args, double));
-			first = 0;
+			f = va_arg(args, double);
+			printf("%s%f", sep, f);
+			sep = ", ";
 		}
 		if (format[i] == 's')
 		{
-			if (!first)
-				printf(", ");
 			str = va_arg(args, char *);
-			if (str == NULL)
-				printf("(nil)");
-			else
-				printf("%s", str);
-			first = 0;
+			printf("%s%s", sep, str ? str : "(nil)");
+			sep = ", ";
 		}
 		i++;
 	}
