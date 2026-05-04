@@ -32,6 +32,42 @@ shash_table_t *shash_table_create(unsigned long int size)
 }
 
 /**
+ * insert_sorted - Inserts a node in the sorted linked list
+ * @ht: The hash table
+ * @new_node: The new node to insert
+ */
+static void insert_sorted(shash_table_t *ht, shash_node_t *new_node)
+{
+	shash_node_t *tmp;
+
+	new_node->sprev = NULL;
+	new_node->snext = NULL;
+	if (ht->shead == NULL)
+	{
+		ht->shead = new_node;
+		ht->stail = new_node;
+		return;
+	}
+	if (strcmp(new_node->key, ht->shead->key) < 0)
+	{
+		new_node->snext = ht->shead;
+		ht->shead->sprev = new_node;
+		ht->shead = new_node;
+		return;
+	}
+	tmp = ht->shead;
+	while (tmp->snext != NULL && strcmp(new_node->key, tmp->snext->key) > 0)
+		tmp = tmp->snext;
+	new_node->snext = tmp->snext;
+	new_node->sprev = tmp;
+	if (tmp->snext != NULL)
+		tmp->snext->sprev = new_node;
+	else
+		ht->stail = new_node;
+	tmp->snext = new_node;
+}
+
+/**
  * shash_table_set - Adds or updates a key/value in the sorted hash table
  * @ht: The hash table
  * @key: The key
@@ -72,31 +108,7 @@ int shash_table_set(shash_table_t *ht, const char *key, const char *value)
 	}
 	new_node->next = ht->array[index];
 	ht->array[index] = new_node;
-	new_node->sprev = NULL;
-	new_node->snext = NULL;
-	if (ht->shead == NULL)
-	{
-		ht->shead = new_node;
-		ht->stail = new_node;
-		return (1);
-	}
-	if (strcmp(new_node->key, ht->shead->key) < 0)
-	{
-		new_node->snext = ht->shead;
-		ht->shead->sprev = new_node;
-		ht->shead = new_node;
-		return (1);
-	}
-	tmp = ht->shead;
-	while (tmp->snext != NULL && strcmp(new_node->key, tmp->snext->key) > 0)
-		tmp = tmp->snext;
-	new_node->snext = tmp->snext;
-	new_node->sprev = tmp;
-	if (tmp->snext != NULL)
-		tmp->snext->sprev = new_node;
-	else
-		ht->stail = new_node;
-	tmp->snext = new_node;
+	insert_sorted(ht, new_node);
 	return (1);
 }
 
